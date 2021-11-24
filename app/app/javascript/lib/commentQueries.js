@@ -1,10 +1,10 @@
-import axios from "axios";
+import axios_csrf from './axiosCsrf'
 
 const commentUrl = 'http://localhost:3000/comment'
 const postUrl = 'http://localhost:3000/post'
 
 export function getComments(post_id, setter) {
-  axios.get(`${postUrl}/${post_id}/comment`, {withCredentials: true})
+  axios_csrf().get(`${postUrl}/${post_id}/comment`, {withCredentials: true})
     .then(response => {
       if (response.data.status === 'ok') {
         setter(response.data.comments)
@@ -14,7 +14,7 @@ export function getComments(post_id, setter) {
 }
 
 export function createComment(comment, setter) {
-  axios.post(commentUrl, {comment: comment}, {withCredentials: true})
+  axios_csrf().post(commentUrl, {comment: comment}, {withCredentials: true})
     .then(response => {
       if (response.data.status === 'created') {
       
@@ -24,7 +24,7 @@ export function createComment(comment, setter) {
 }
 
 export function updateComment(comment, switcher) {
-  axios.put(`${commentUrl}/${comment.id}`, {comment: comment}, {withCredentials: true})
+  axios_csrf().put(`${commentUrl}/${comment.id}`, {comment: comment}, {withCredentials: true})
     .then(response => {
       if (response.data.status === 'ok') {
         switcher()
@@ -34,7 +34,7 @@ export function updateComment(comment, switcher) {
 }
 
 export function deleteComment(comment, setter) {
-  axios.delete(`${commentUrl}/${comment.id}`, {withCredentials: true})
+  axios_csrf().delete(`${commentUrl}/${comment.id}`, {withCredentials: true})
     .then(response => {
       if (response.data.status === 'ok') {
         // setter(null)

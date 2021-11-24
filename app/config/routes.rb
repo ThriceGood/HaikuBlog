@@ -13,6 +13,10 @@ Rails.application.routes.draw do
   end 
   resources :comment, only: [:create, :update, :destroy], :defaults => { :format => 'json' } 
 
+  resources :user, only: [], :defaults => { :format => 'json' } do 
+    resources :post, only: [:index]
+  end
+
   resources :reaction, only: [:create, :destroy], :defaults => { :format => 'json' } 
   get 'reaction/:comment_id/:reaction_type', to: 'reaction#get_reactions_by_type'
 

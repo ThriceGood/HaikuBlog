@@ -63,7 +63,10 @@ section {
         .post-details {
             margin-top: 30px;
             color: $text_color_light;
-            font-size: smaller;
+            font-size: medium;
+            #post-date {
+                font-size: smaller;
+            }
         }
     }
 }

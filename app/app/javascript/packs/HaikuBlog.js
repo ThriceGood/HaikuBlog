@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom"
 import { checkLogin, logout } from '../lib/userQueries'
 import Posts from '../components/posts/Posts'
+import PostsUser from '../components/posts/PostsUser'
 import Post from '../components/posts/Post'
 import PostNew from '../components/posts/PostNew'
 import PostEdit from '../components/posts/PostEdit'
@@ -59,6 +60,7 @@ const HaikuBlog = () => {
             <Route path='/' element={<Posts/>}/>
             <Route path='/login' element={<Login handleLogin={handleLogin}/>}/>
             <Route path='/sign-up' element={<Registration handleLogin={handleLogin}/>}/>
+            <Route path='/user/:user_id/posts' element={<PostsUser/>}/>
             <Route path='/post/:id' element={<Post currentUser={currentUser}/>}/>
             <Route path='/post/new' element={<PostNew currentUser={currentUser}/>}/>
             <Route path='/post/:id/edit' element={<PostEdit currentUser={currentUser}/>}/>

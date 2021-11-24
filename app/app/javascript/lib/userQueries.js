@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axios_csrf from './axiosCsrf'
 
 const baseUrl = 'http://localhost:3000'
 const authenticationUrl = `${baseUrl}/authenticate`
@@ -7,7 +7,7 @@ const sessionsUrl = `${baseUrl}/sessions`
 const logoutUrl = `${baseUrl}/logout`
 
 export function checkLogin(user, setter) {
-  axios.get(authenticationUrl, {withCredentials: true})
+  axios_csrf().get(authenticationUrl, {withCredentials: true})
     .then(response => {
       if (response.data.status === 'ok' && !user.id) {
         setter(response.data.current_user) 
@@ -18,7 +18,7 @@ export function checkLogin(user, setter) {
 }
 
 export function login(user, loginHandler, navigate) {
-  axios.post(sessionsUrl, {
+  axios_csrf().post(sessionsUrl, {
         email: user.email,
         password: user.password
       },
@@ -33,14 +33,14 @@ export function login(user, loginHandler, navigate) {
 }
 
 export function logout(setter) {
-  axios.delete(logoutUrl, {withCredentials: true})
+  axios_csrf().delete(logoutUrl, {withCredentials: true})
     .then(() => {
       setter({id: null, username: null})
     }).catch(error => {console.log(error)})
 }
 
 export function createUser(user, loginHandler, navigate) {
-  axios.post(registrationsUrl, {user: user}, {withCredentials: true}) 
+  axios_csrf().post(registrationsUrl, {user: user}, {withCredentials: true}) 
   .then(response => {
     if (response.data.status === 'created') {
       loginHandler(response.data)

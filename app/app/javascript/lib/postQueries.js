@@ -1,9 +1,10 @@
-import axios from 'axios'
+import axios_csrf from './axiosCsrf'
 
 const postUrl = 'http://localhost:3000/post'
+const userUrl = 'http://localhost:3000/user'
 
 export function getPost(id, setter) {
-  axios.get(`${postUrl}/${id}`, {withCredentials: true})
+  axios_csrf().get(`${postUrl}/${id}`, {withCredentials: true})
     .then(response => {
       setter(response.data.post)
     })
@@ -11,7 +12,15 @@ export function getPost(id, setter) {
 }
 
 export function getPosts(setter) {
-  axios.get(postUrl, {withCredentials: true})
+  axios_csrf().get(postUrl, {withCredentials: true})
+    .then(response => {
+      setter(response.data.posts)
+    })
+    .catch(error => {console.log(error)})
+}
+
+export function getUserPosts(user_id, setter) {
+  axios_csrf().get(`${userUrl}/${user_id}/post`, {withCredentials: true})
     .then(response => {
       setter(response.data.posts)
     })
@@ -19,7 +28,7 @@ export function getPosts(setter) {
 }
 
 export function createPost(post, navigate) {
-  axios.post(postUrl, {post: post}, {withCredentials: true}) 
+  axios_csrf().post(postUrl, {post: post}, {withCredentials: true}) 
   .then(response => {
     if (response.data.status === 'created') {
       navigate(`/post/${response.data.post.id}`)
@@ -29,7 +38,7 @@ export function createPost(post, navigate) {
 }
 
 export function updatePost(post, navigate) {
-  axios.put(`${postUrl}/${post.id}`, {post: post}, {withCredentials: true}) 
+  axios_csrf().put(`${postUrl}/${post.id}`, {post: post}, {withCredentials: true}) 
     .then(response => {
       if (response.data.status === 'ok') {
         navigate(`/post/${response.data.post.id}`)
@@ -39,7 +48,7 @@ export function updatePost(post, navigate) {
 }
 
 export function deletePost(post, navigate) {
-  axios.delete(`${postUrl}/${post.id}`, {withCredentials: true}) 
+  axios_csrf().delete(`${postUrl}/${post.id}`, {withCredentials: true}) 
     .then(response => {
       if (response.data.status === 'ok') {
         navigate(`/`)

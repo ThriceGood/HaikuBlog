@@ -4,7 +4,7 @@ class PostController < ApplicationController
 
   # GET /post
   def index
-    @posts = get_all_posts()
+    @posts = get_all_posts(params[:user_id])
   end
   
   # GET /post/1
@@ -54,8 +54,12 @@ class PostController < ApplicationController
     @post = Post.find(params[:id])
   end
 
-  def get_all_posts
-    Post.all.order(created_at: :desc)
+  def get_all_posts(user_id=nil)
+    if user_id.nil?
+      Post.all.order(created_at: :desc)
+    else
+      Post.of_user_id(user_id).order(created_at: :desc)
+    end
   end
 
   def broadcast_post(status)
