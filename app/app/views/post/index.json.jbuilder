@@ -7,6 +7,7 @@ json.posts do
     json.title post.title.titleize
     json.content post.content
     json.created_at post.created_at.strftime('%Y-%m-%d')
+    json.comment_count post.comments.count
     json.user do
       json.id post.user.id
       json.username post.user.username

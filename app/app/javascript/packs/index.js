@@ -1,6 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import HaikuBlog from './HaikuBlog'
+import HaikuBlog from '../components/HaikuBlog'
 
 document.addEventListener('DOMContentLoaded', () => {
   ReactDOM.render(

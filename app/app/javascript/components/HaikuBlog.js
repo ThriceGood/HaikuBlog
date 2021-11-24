@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react'
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom"
 import { checkLogin, logout } from '../lib/userQueries'
-import Posts from '../components/posts/Posts'
-import PostsUser from '../components/posts/PostsUser'
-import Post from '../components/posts/Post'
-import PostNew from '../components/posts/PostNew'
-import PostEdit from '../components/posts/PostEdit'
-import Login from '../components/auth/Login'
-import Registration from '../components/auth/Registration'
+import Posts from './posts/Posts'
+import PostsUser from './posts/PostsUser'
+import Post from './posts/Post'
+import PostNew from './posts/PostNew'
+import PostEdit from './posts/PostEdit'
+import Login from './auth/Login'
+import Registration from './auth/Registration'
 
 const HaikuBlog = () => {
   const [currentUser, setCurrentUser] = useState({id: null, username: null})
