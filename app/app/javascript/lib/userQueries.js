@@ -1,50 +1,61 @@
-import axios_csrf from './axiosCsrf'
+import { baseUrl, httpGet, httpPost, httpDelete, graphMutation } from './axiosCsrf'
 
-const baseUrl = 'http://localhost:3000'
 const authenticationUrl = `${baseUrl}/authenticate`
-const registrationsUrl = `${baseUrl}/registrations`
 const sessionsUrl = `${baseUrl}/sessions`
 const logoutUrl = `${baseUrl}/logout`
 
 export function checkLogin(user, setter) {
-  axios_csrf().get(authenticationUrl, {withCredentials: true})
-    .then(response => {
-      if (response.data.status === 'ok' && !user.id) {
-        setter(response.data.current_user) 
-      } else if (response.data.status !== 'ok' && user.id) {
-        setter(response.data.current_user) 
-      }
-    }).catch(error => {console.log(error)})
+  const setUser = response => {
+    if (response.data.status === 'ok' && !user.id) {
+      setter(response.data.current_user) 
+    } else if (response.data.status !== 'ok' && user.id) {
+      setter(response.data.current_user) 
+    }
+  }
+  httpGet(authenticationUrl, setUser)
 }
 
 export function login(user, loginHandler, navigate) {
-  axios_csrf().post(sessionsUrl, {
-        email: user.email,
-        password: user.password
-      },
-      {withCredentials: true}
-    ) 
-    .then(response => {
-      if (response.data.status === 'ok') {
-        loginHandler(response.data)
-      }
-      navigate('/')
-    }).catch(error => {console.log(error)})
+  const data = {email: user.email, password: user.password}
+  const handleLogin = response => {
+    if (response.data.status === 'ok') {
+      loginHandler(response.data.user)
+    }
+    navigate('/')
+  }
+  httpPost(sessionsUrl, data, handleLogin)
 }
 
 export function logout(setter) {
-  axios_csrf().delete(logoutUrl, {withCredentials: true})
-    .then(() => {
-      setter({id: null, username: null})
-    }).catch(error => {console.log(error)})
+  const unsetCurrentUser = () => {
+    setter({id: null, username: null})
+    // need to fully refresh on logout 
+    // to refresh the csrf token
+    window.location = '/'
+  }
+  httpDelete(logoutUrl, unsetCurrentUser)
 }
 
 export function createUser(user, loginHandler, navigate) {
-  axios_csrf().post(registrationsUrl, {user: user}, {withCredentials: true}) 
-  .then(response => {
-    if (response.data.status === 'created') {
-      loginHandler(response.data)
+  const mutation_query = `
+    mutation {
+      createUser(input:{
+        username: "${user.username}"
+        email: "${user.email}"
+        password: "${user.password}"
+        passwordConfirmation: "${user.password_confirmation}"
+      }) {
+        user {
+          id
+          username
+        }
+        errors
+      }
     }
+  `
+  const login = response => {
+    loginHandler(response.data.data.createUser.user)
     navigate('/')
-  }).catch(error => {console.log(error)})
+  }
+  graphMutation(mutation_query, login)
 }

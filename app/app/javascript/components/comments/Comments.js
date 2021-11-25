@@ -10,18 +10,14 @@ const Comments = props => {
   const [formComment, setFormComment] = useState({
     post_id: props.post_id, 
     user_id: props.currentUser.id,
-    text: '',
-    created_at: ''
+    text: ''
   })
 
   // use to tear down subscriptions on unmout
   // https://stackoverflow.com/a/55139745/3662277
-  useEffect(
-    () => {
-      cable_ref.current = cable;
-    },
-    [cable]
-  );
+  useEffect(() => {
+    cable_ref.current = cable;
+  }, [cable])
 
   useEffect(() => {
     getComments(props.post_id, setComments)
@@ -44,12 +40,11 @@ const Comments = props => {
 
   function handleSubmit(event) {
     event.preventDefault()
-    createComment(formComment, setComments)
+    createComment(formComment)
     setFormComment({
       post_id: props.post_id, 
       user_id: props.currentUser.id, 
-      text: '',
-      created_at: ''
+      text: ''
     })
   }
 
@@ -74,7 +69,7 @@ const Comments = props => {
         </div>}
       {
         comments && comments.map(comment => (
-          <div key={comment.id}>
+          <div key={`comment-${comment.id}`}>
             <Comment comment={comment} currentUser={props.currentUser}/>
           </div>
         ))

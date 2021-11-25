@@ -1,58 +1,131 @@
-import axios_csrf from './axiosCsrf'
+import { graphQuery, graphMutation } from './axiosCsrf'
 
-const postUrl = 'http://localhost:3000/post'
-const userUrl = 'http://localhost:3000/user'
-
-export function getPost(id, setter) {
-  axios_csrf().get(`${postUrl}/${id}`, {withCredentials: true})
-    .then(response => {
-      setter(response.data.post)
-    })
-    .catch(error => {console.log(error)})
+export function getPost(post_id, setter) {
+  const queryString = `
+  {
+    post(id:${post_id}) {
+      id
+      title
+      content
+      createdAt
+      commentCount
+      user {
+        id
+        username
+      }
+    }
+  }
+  `
+  const setData = response => {
+    setter(response.data.data.post)
+  }
+  graphQuery(queryString, setData)
 }
 
 export function getPosts(setter) {
-  axios_csrf().get(postUrl, {withCredentials: true})
-    .then(response => {
-      setter(response.data.posts)
-    })
-    .catch(error => {console.log(error)})
+  const queryString = `
+    {
+      posts {
+        id
+        title
+        content
+        createdAt
+        commentCount
+        user {
+          id
+          username
+        }
+      }
+    }
+  `
+  const setData = response => {
+    setter(response.data.data.posts)
+  }
+  graphQuery(queryString, setData)
 }
 
 export function getUserPosts(user_id, setter) {
-  axios_csrf().get(`${userUrl}/${user_id}/post`, {withCredentials: true})
-    .then(response => {
-      setter(response.data.posts)
-    })
-    .catch(error => {console.log(error)})
+  const queryString = `
+    {
+      user(id:${user_id}) {
+        posts {
+          id
+          title
+          content
+          createdAt
+          commentCount
+          user {
+            id
+            username
+          }
+        }
+      }
+    }
+  `
+  const setData = response => {
+    // errors: response.data.errors[{message: ...}]
+    setter(response.data.data.user.posts)
+  }
+  graphQuery(queryString, setData)
 }
 
 export function createPost(post, navigate) {
-  axios_csrf().post(postUrl, {post: post}, {withCredentials: true}) 
-  .then(response => {
-    if (response.data.status === 'created') {
-      navigate(`/post/${response.data.post.id}`)
+  const mutationString = `
+    mutation {
+      createPost(input:{
+        title: "${post.title}"
+        content: "${post.content}"
+        userId: ${post.user_id}
+      }) {
+        post {
+          id
+        }
+        errors
+      }
     }
-  })
-  .catch(error => {console.log(error)})
+  `
+  const nav = response => {
+    // errors: response.data.errors[{message: ...}]
+    navigate(`/post/${response.data.data.createPost.post.id}`)
+  }
+  graphMutation(mutationString, nav)
 }
 
 export function updatePost(post, navigate) {
-  axios_csrf().put(`${postUrl}/${post.id}`, {post: post}, {withCredentials: true}) 
-    .then(response => {
-      if (response.data.status === 'ok') {
-        navigate(`/post/${response.data.post.id}`)
+  const mutationString = `
+    mutation {
+      updatePost(input:{
+        id: ${post.id}
+        title: "${post.title}"
+        content: "${post.content}"
+      }) {
+        post {
+          id
+        }
+        errors
       }
-    })
-    .catch(error => {console.log(error)})
+    }
+  `
+  const nav = response => {
+    // errors: response.data.errors[{message: ...}]
+    navigate(`/post/${response.data.data.updatePost.post.id}`)
+  }
+  graphMutation(mutationString, nav)
 }
 
 export function deletePost(post, navigate) {
-  axios_csrf().delete(`${postUrl}/${post.id}`, {withCredentials: true}) 
-    .then(response => {
-      if (response.data.status === 'ok') {
-        navigate(`/`)
+  const mutationString = `
+    mutation {
+      deletePost(input: {
+        id: ${post.id}
+      }) {
+        message
       }
-    })
-    .catch(error => {console.log(error)})
+    }
+  `
+  const nav = () => {
+    // errors: response.data.errors[{message: ...}]
+    navigate('/')
+  }
+  graphMutation(mutationString, nav)
 }

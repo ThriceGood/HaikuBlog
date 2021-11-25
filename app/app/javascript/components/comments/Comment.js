@@ -8,10 +8,10 @@ const Comment = props => {
   const [comment, setComment] = useState({
     id: props.comment.id,
     text: props.comment.text,
-    post_id: props.comment.post_id,
-    created_at: props.comment.created_at,
+    postId: props.comment.postId,
+    createdAt: props.comment.createdAt,
     user: props.comment.user,
-    reactions: props.comment.reactions
+    reactionInfo: JSON.parse(props.comment.reactionInfo)
   })
 
   function switchToEdit() {
@@ -32,7 +32,7 @@ const Comment = props => {
   }
   
   function handleDeleteComment() {
-    deleteComment(props.comment, setComment)
+    deleteComment(props.comment)
   }
 
   return (
@@ -56,7 +56,7 @@ const Comment = props => {
             :
               <div className='comment'>
                 <p>{comment.text}</p> 
-                <span>{comment.user.username} | {comment.created_at}</span>
+                <span>{comment.user.username} | {comment.createdAt}</span>
                 <div className='reactions'>
                   <Reaction reaction_type='like' comment={comment} currentUser={props.currentUser}/>
                   <Reaction reaction_type='smile' comment={comment} currentUser={props.currentUser}/>

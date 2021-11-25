@@ -9,7 +9,7 @@ const Post = props => {
     id: null, 
     title: null, 
     content: null,
-    created_at: null,
+    createdAt: null,
     user: {id: null}
   })
   const params = useParams()
@@ -30,7 +30,11 @@ const Post = props => {
           <p key={line}>{line}</p>
         ))}
         {post.user.id &&
-          <div className='post-details'>{post.user.username} | {post.created_at}</div>}
+          <div className='post-details'>
+            <Link to={`/user/${post.user.id}/posts`}> 
+              {post.user.username}
+            </Link> | <span id='post-date'>{post.createdAt}</span>
+          </div>}
         {props.currentUser && props.currentUser.id  == post.user.id &&
           <div className='edit-links'>
             <Link to={`/post/${params.id}/edit`}>edit</Link>

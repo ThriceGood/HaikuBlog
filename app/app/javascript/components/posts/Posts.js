@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { Link, useParams } from "react-router-dom";
-import { getPosts, getUserPosts } from '../../lib/postQueries'
+import { getPosts } from '../../lib/postQueries'
 import consumer from "../../channels/consumer"
 
 const Posts = () => {
@@ -11,20 +11,12 @@ const Posts = () => {
 
   // use to tear down subscriptions on unmout
   // https://stackoverflow.com/a/55139745/3662277
-  useEffect(
-    () => {
-      cable_ref.current = cable;
-    },
-    [cable]
-  );
+  useEffect(() => {
+    cable_ref.current = cable;
+  }, [cable])
     
   useEffect(() => {
-    if (params.user_id) {
-      // using seperate component for now...
-      getUserPosts(params.user_id, setPosts)
-    } else {
-      getPosts(setPosts)
-    }
+    getPosts(setPosts)
     create_connection()
     return () => {
       cable_ref.current.unsubscribe()
@@ -44,7 +36,7 @@ const Posts = () => {
     <div>
       {
         posts && posts.map(post => (
-          <article key={post.id}>
+          <article key={`post-${post.id}`}>
             <h3>{post.title}</h3>
             {post.content.split('\n').map(line => (
               <p key={line}>{line}</p>
@@ -53,8 +45,8 @@ const Posts = () => {
               <Link to={`/post/${post.id}`}>view</Link> |&nbsp;
               <Link to={`/user/${post.user.id}/posts`}> 
                 {post.user.username}
-              </Link> | <span id='post-date'>{post.created_at}</span> |
-              <div>{post.comment_count} comments</div>
+              </Link> | <span id='post-date'>{post.createdAt}</span>
+              <div>{post.commentCount} comments</div>
             </div>
           </article>
         ))

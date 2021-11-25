@@ -9,17 +9,14 @@ const Reaction = props => {
 
   // use to tear down subscriptions on unmout
   // https://stackoverflow.com/a/55139745/3662277
-  useEffect(
-    () => {
-      cable_ref.current = cable;
-    },
-    [cable]
-  );
+  useEffect(() => {
+    cable_ref.current = cable;
+  }, [cable]);
 
   useEffect(() => {
-    if (props.comment.reactions) {
-      setReactionsCount(props.comment.reactions[props.reaction_type].count)
-      setReactionUserIds(props.comment.reactions[props.reaction_type].user_ids)
+    if (props.comment.reactionInfo) {
+      setReactionsCount(props.comment.reactionInfo[props.reaction_type].count)
+      setReactionUserIds(props.comment.reactionInfo[props.reaction_type].user_ids)
     }
     create_connection()
     return () => {

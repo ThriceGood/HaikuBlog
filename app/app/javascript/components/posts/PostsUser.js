@@ -23,7 +23,8 @@ const Posts = () => {
               <Link to={`/post/${post.id}`}>view</Link> |&nbsp;
               <Link to={`/user/${post.user.id}/posts`}> 
                 {post.user.username}
-              </Link> | <span id='post-date'>{post.created_at}</span>
+              </Link> | <span id='post-date'>{post.createdAt}</span>
+              <div>{post.commentCount} comments</div>
             </div>
           </article>
         ))

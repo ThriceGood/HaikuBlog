@@ -1,44 +1,78 @@
-import axios_csrf from './axiosCsrf'
+import { baseUrl, httpClient, graphQuery, graphMutation } from './axiosCsrf'
 
-const commentUrl = 'http://localhost:3000/comment'
-const postUrl = 'http://localhost:3000/post'
+const commentUrl = `${baseUrl}/comment`
 
 export function getComments(post_id, setter) {
-  axios_csrf().get(`${postUrl}/${post_id}/comment`, {withCredentials: true})
-    .then(response => {
-      if (response.data.status === 'ok') {
-        setter(response.data.comments)
+  const queryString = `
+    {
+      comments(postId:${post_id}) {
+        id
+        text
+        postId
+        createdAt
+        reactionInfo
+        user {
+          id
+          username
+        }
       }
-    })
-    .catch(error => {console.log(error)})
+    }
+  `
+  const setComments = response => {
+    setter(response.data.data.comments)
+  }
+  graphQuery(queryString, setComments)
 }
 
-export function createComment(comment, setter) {
-  axios_csrf().post(commentUrl, {comment: comment}, {withCredentials: true})
-    .then(response => {
-      if (response.data.status === 'created') {
-      
+export function createComment(comment) {
+  const mutationString = `
+    mutation {
+      createComment(input:{
+        text: "${comment.text}"
+        postId: ${comment.post_id}
+        userId: ${comment.user_id}
+      }) {
+        errors
       }
-    })
-    .catch(error => {console.log(error)})
+    }
+  `
+  const setComments = response => {
+    // response.data.data.createComment.errors
+  }
+  graphMutation(mutationString, setComments)
 }
 
-export function updateComment(comment, switcher) {
-  axios_csrf().put(`${commentUrl}/${comment.id}`, {comment: comment}, {withCredentials: true})
-    .then(response => {
-      if (response.data.status === 'ok') {
-        switcher()
+export function updateComment(comment, formSwitcher) {
+
+  const mutationString = `
+    mutation {
+      updateComment(input:{
+        id: ${comment.id}
+        text: "${comment.text}"
+      }) {
+        errors
       }
-    })
-    .catch(error => {console.log(error)})
+    }
+  `
+  const switchForm = response => {
+    formSwitcher()
+  }
+  graphMutation(mutationString, switchForm)
 }
 
-export function deleteComment(comment, setter) {
-  axios_csrf().delete(`${commentUrl}/${comment.id}`, {withCredentials: true})
-    .then(response => {
-      if (response.data.status === 'ok') {
-        // setter(null)
+export function deleteComment(comment) {
+
+  const mutationString = `
+    mutation {
+      deleteComment(input: {
+        id: ${comment.id}
+      }) {
+        message
       }
-    })
-    .catch(error => {console.log(error)})
+    }
+  `
+  const callbackf = response => {
+    // response.data.data.deleteComment.message: "successfully deleted comment"
+  }
+  graphMutation(mutationString, callbackf)
 }

@@ -17,7 +17,7 @@ const HaikuBlog = () => {
   }, [])
 
   function handleLogin(data) {
-    setCurrentUser(data.user)
+    setCurrentUser(data)
   }
 
   const handleLogout = () => {
@@ -32,7 +32,7 @@ const HaikuBlog = () => {
           <Link to='/'><h1>HaikuBlog</h1></Link>
           <div id='welcome-text'>
             {currentUser.id &&
-              `Welcome, ${currentUser.username}`}
+              `welcome, ${currentUser.username}`}
           </div>
           {currentUser.id 
             ?
