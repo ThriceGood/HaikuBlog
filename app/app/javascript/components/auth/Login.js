@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { login } from '../../lib/userQueries';
 
@@ -6,9 +6,15 @@ const Login = props => {
   const navigate = useNavigate()
   const [user, setUser] = useState({email: '', password: ''})
 
+  useEffect(() => {
+    return () => {
+      props.setErrors('')
+    }
+  }, [])
+
   function handleSubmit(event) {
     event.preventDefault()
-    login(user, props.handleLogin, navigate)
+    login(user, props.handleLogin, navigate, props.setErrors)
   }
 
   function handleChange(event) {

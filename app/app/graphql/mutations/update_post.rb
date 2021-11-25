@@ -5,22 +5,26 @@ class Mutations::UpdatePost < Mutations::BaseMutation
   argument :content, String, required: true
 
   field :post, Types::PostType, null: true
-  field :errors, [String], null: false
+  field :errors, [String], null: true
 
   def resolve(id:, title:, content:)
-    post = Post.find(id)
-    post.title = title
-    post.content = content
-    if post.save
-      CableHelpers::Posts.broadcast_posts()
-      return {
-        post: post,
-        errors: []
-      }
+    if is_authorized?
+      post = Post.find(id)
+      post.title = title
+      post.content = content
+      if post.save
+        CableHelpers::Posts.broadcast_posts()
+        return {
+          post: post,
+        }
+      else
+        return {
+          errors: post.errors.full_messages
+        }
+      end
     else
       return {
-        post: nil,
-        errors: post.errors.full_messages
+        errors: ['not authorized']
       }
     end
   end

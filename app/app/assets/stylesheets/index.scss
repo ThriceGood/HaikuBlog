@@ -2,15 +2,14 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: https://sass-lang.com/
 
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;1,100;1,300;1,400&family=Titillium+Web:ital,wght@0,300;0,400;1,300;1,400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bad+Script&display=swap');
 
 $primary: #8d5a97ff;
 $secondary: #b4ebcaff;
 $highlight: #ffb7c3ff;
 $text_color: #2b303aff;
 $text_color_light: #a4a5aeff;
-
-@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;1,100;1,300;1,400&family=Titillium+Web:ital,wght@0,300;0,400;1,300;1,400&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Bad+Script&display=swap');
 
 body {
     font-family: 'Titillium Web', sans-serif;
@@ -23,6 +22,11 @@ body {
 
 main {
     display: flex;
+}
+
+#error-messages {
+    font-size: medium;
+    color: $primary;
 }
 
 nav {
@@ -81,22 +85,22 @@ section {
 }
 
 .form {
-        input {
-            width: 200px;
-            height: 20px;
-            margin-bottom: 5px;
-        }
-        input:focus {
-            outline: none;
-        }
-        textarea {
-            width: 200px;
-            height: 200px;
-            margin-bottom: 5px;
-        }
-        textarea:focus {
-            outline: none;
-        }
+    input {
+        width: 200px;
+        height: 20px;
+        margin-bottom: 5px;
+    }
+    input:focus {
+        outline: none;
+    }
+    textarea {
+        width: 200px;
+        height: 200px;
+        margin-bottom: 5px;
+    }
+    textarea:focus {
+        outline: none;
+    }
 }
 
 .comment-form {

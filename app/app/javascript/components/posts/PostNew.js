@@ -6,9 +6,15 @@ const PostNew = props => {
   const navigate = useNavigate()
   const [post, setPost] = useState({title: '', content: '', user_id: props.currentUser.id})
 
+  useEffect(() => {
+    return () => {
+      props.setErrors('')
+    }
+  }, [])
+
   function handleSubmit(event) {
     event.preventDefault()
-    createPost(post, navigate)
+    createPost(post, navigate, props.setErrors)
   }
 
   function handleChange(event) {

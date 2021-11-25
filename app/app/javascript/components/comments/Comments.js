@@ -20,7 +20,7 @@ const Comments = props => {
   }, [cable])
 
   useEffect(() => {
-    getComments(props.post_id, setComments)
+    getComments(props.post_id, setComments, props.setErrors)
     create_connection()
     return () => {
       cable_ref.current.unsubscribe()
@@ -40,7 +40,7 @@ const Comments = props => {
 
   function handleSubmit(event) {
     event.preventDefault()
-    createComment(formComment)
+    createComment(formComment, props.setErrors)
     setFormComment({
       post_id: props.post_id, 
       user_id: props.currentUser.id, 
@@ -70,7 +70,7 @@ const Comments = props => {
       {
         comments && comments.map(comment => (
           <div key={`comment-${comment.id}`}>
-            <Comment comment={comment} currentUser={props.currentUser}/>
+            <Comment comment={comment} currentUser={props.currentUser} setErrors={props.setErrors}/>
           </div>
         ))
       }

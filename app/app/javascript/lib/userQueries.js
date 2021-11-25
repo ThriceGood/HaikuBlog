@@ -5,38 +5,39 @@ const sessionsUrl = `${baseUrl}/sessions`
 const logoutUrl = `${baseUrl}/logout`
 
 export function checkLogin(user, setter) {
-  const setUser = response => {
+  const callback = response => {
     if (response.data.status === 'ok' && !user.id) {
       setter(response.data.current_user) 
     } else if (response.data.status !== 'ok' && user.id) {
       setter(response.data.current_user) 
     }
   }
-  httpGet(authenticationUrl, setUser)
+  httpGet(authenticationUrl, callback)
 }
 
-export function login(user, loginHandler, navigate) {
+export function login(user, loginHandler, navigate, setErrors) {
   const data = {email: user.email, password: user.password}
-  const handleLogin = response => {
+  const callback = response => {
     if (response.data.status === 'ok') {
       loginHandler(response.data.user)
+      navigate('/')
+    } else {
+      setErrors('wrong email or password')
     }
-    navigate('/')
   }
-  httpPost(sessionsUrl, data, handleLogin)
+  httpPost(sessionsUrl, data, callback)
 }
 
 export function logout(setter) {
-  const unsetCurrentUser = () => {
+  const callback = () => {
     setter({id: null, username: null})
-    // need to fully refresh on logout 
     // to refresh the csrf token
     window.location = '/'
   }
-  httpDelete(logoutUrl, unsetCurrentUser)
+  httpDelete(logoutUrl, callback)
 }
 
-export function createUser(user, loginHandler, navigate) {
+export function createUser(user, loginHandler, navigate, setErrors) {
   const mutation_query = `
     mutation {
       createUser(input:{
@@ -53,9 +54,13 @@ export function createUser(user, loginHandler, navigate) {
       }
     }
   `
-  const login = response => {
-    loginHandler(response.data.data.createUser.user)
-    navigate('/')
+  const callback = response => {
+    if (response.data.createUser.errors) {
+      setErrors(response.data.createUser.errors)
+    } else {
+      loginHandler(response.data.createUser.user)
+      navigate('/')
+    }
   }
-  graphMutation(mutation_query, login)
+  graphMutation(mutation_query, callback)
 }

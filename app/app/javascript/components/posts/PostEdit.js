@@ -3,18 +3,21 @@ import { useParams, Link } from "react-router-dom";
 import { useNavigate } from 'react-router-dom'
 import { getPost, updatePost } from '../../lib/postQueries';
 
-const PostEdit = () => {
+const PostEdit = props => {
   const navigate = useNavigate()
   const params = useParams()
   const [post, setPost] = useState({id: params.id, title: '', content: ''})
 
     useEffect(() => {
       getPost(params.id, setPost)
+      return () => {
+        props.setErrors('')
+      }
     }, [])
 
   function handleSubmit(event) {
     event.preventDefault()
-    updatePost(post, navigate)
+    updatePost(post, navigate, props.setErrors)
   }
 
   function handleChange(event) {

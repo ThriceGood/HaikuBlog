@@ -13,7 +13,7 @@ export const httpClient = axios
 export function graphQuery(queryString, callback) {
   axios.post(graphUrl, {query: queryString}, {withCredentials: true}) 
   .then(response => {
-    callback(response)
+    callback(response.data)
   })
   .catch(error => {console.log(error)})
 }
@@ -21,7 +21,7 @@ export function graphQuery(queryString, callback) {
 export function graphMutation(mutationString, callback) {
   axios.post(graphUrl, {query: mutationString}, {withCredentials: true}) 
   .then(response => {
-    callback(response)
+    callback(response.data)
   })
   .catch(error => {console.log(error)})
 }

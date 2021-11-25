@@ -13,7 +13,7 @@ module Types
     end
 
     def created_at
-      object.created_at.strftime('%Y-%m-%d')
+      object.created_at.strftime('%Y-%m-%d %H:%M')
     end
     
   end

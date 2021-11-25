@@ -15,11 +15,14 @@ const Post = props => {
   const params = useParams()
 
   useEffect(() => {
-    getPost(params.id, setPost)
+    getPost(params.id, setPost, props.setErrors)
+    return () => {
+      props.setErrors('')
+    }
   }, [])
 
   function handleDelete() { 
-    deletePost(post, navigate)
+    deletePost(post, navigate, props.setErrors)
   }
 
   return (
@@ -42,7 +45,7 @@ const Post = props => {
           </div>}
       </article>
       <div>
-        <Comments post_id={params.id} currentUser={props.currentUser}/>
+        <Comments post_id={params.id} currentUser={props.currentUser} setErrors={props.setErrors}/>
       </div>
     </div>
   )

@@ -1,6 +1,6 @@
 import { graphQuery, graphMutation } from './axiosCsrf'
 
-export function getPost(post_id, setter) {
+export function getPost(post_id, setter, setErrors) {
   const queryString = `
   {
     post(id:${post_id}) {
@@ -16,10 +16,14 @@ export function getPost(post_id, setter) {
     }
   }
   `
-  const setData = response => {
-    setter(response.data.data.post)
+  const callback = response => {
+    if (response.errors) {
+      setErrors(response.errors)
+    } else {
+      setter(response.data.post)
+    }
   }
-  graphQuery(queryString, setData)
+  graphQuery(queryString, callback)
 }
 
 export function getPosts(setter) {
@@ -38,13 +42,17 @@ export function getPosts(setter) {
       }
     }
   `
-  const setData = response => {
-    setter(response.data.data.posts)
+  const callback = response => {
+    if (response.errors) {
+      setErrors(response.errors)
+    } else {
+      setter(response.data.posts)
+    }
   }
-  graphQuery(queryString, setData)
+  graphQuery(queryString, callback)
 }
 
-export function getUserPosts(user_id, setter) {
+export function getUserPosts(user_id, setter, setErrors) {
   const queryString = `
     {
       user(id:${user_id}) {
@@ -62,14 +70,17 @@ export function getUserPosts(user_id, setter) {
       }
     }
   `
-  const setData = response => {
-    // errors: response.data.errors[{message: ...}]
-    setter(response.data.data.user.posts)
+  const callback = response => {
+    if (response.errors) {
+      setErrors(response.errors)
+    } else {
+      setter(response.data.user.posts)
+    }
   }
-  graphQuery(queryString, setData)
+  graphQuery(queryString, callback)
 }
 
-export function createPost(post, navigate) {
+export function createPost(post, navigate, setErrors) {
   const mutationString = `
     mutation {
       createPost(input:{
@@ -84,14 +95,17 @@ export function createPost(post, navigate) {
       }
     }
   `
-  const nav = response => {
-    // errors: response.data.errors[{message: ...}]
-    navigate(`/post/${response.data.data.createPost.post.id}`)
+  const callback = response => {
+    if (response.data.createPost.errors) {
+      setErrors(response.data.createPost.errors)
+    } else {
+      navigate(`/post/${response.data.createPost.post.id}`)
+    }
   }
-  graphMutation(mutationString, nav)
+  graphMutation(mutationString, callback)
 }
 
-export function updatePost(post, navigate) {
+export function updatePost(post, navigate, setErrors) {
   const mutationString = `
     mutation {
       updatePost(input:{
@@ -106,14 +120,18 @@ export function updatePost(post, navigate) {
       }
     }
   `
-  const nav = response => {
-    // errors: response.data.errors[{message: ...}]
-    navigate(`/post/${response.data.data.updatePost.post.id}`)
+  const callback = response => {
+    console.log(response);
+    if (response.data.updatePost.errors) {
+      setErrors(response.data.updatePost.errors)
+    } else {
+      navigate(`/post/${response.data.updatePost.post.id}`)
+    }
   }
-  graphMutation(mutationString, nav)
+  graphMutation(mutationString, callback)
 }
 
-export function deletePost(post, navigate) {
+export function deletePost(post, navigate, setErrors) {
   const mutationString = `
     mutation {
       deletePost(input: {
@@ -123,9 +141,12 @@ export function deletePost(post, navigate) {
       }
     }
   `
-  const nav = () => {
-    // errors: response.data.errors[{message: ...}]
-    navigate('/')
+  const callback = response => {
+    if (response.data.deletePost.errors) {
+      setErrors(response.data.deletePost.errors)
+    } else {
+      navigate('/')
+    }
   }
-  graphMutation(mutationString, nav)
+  graphMutation(mutationString, callback)
 }

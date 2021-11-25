@@ -6,7 +6,7 @@ class Mutations::CreateUser < Mutations::BaseMutation
   argument :password_confirmation, String, required: true
 
   field :user, Types::UserType, null: true
-  field :errors, [String], null: false
+  field :errors, [String], null: true
 
   def resolve(username:, email:, password:, password_confirmation:)
     user = User.new(
@@ -16,12 +16,10 @@ class Mutations::CreateUser < Mutations::BaseMutation
       password_confirmation: password_confirmation)
     if user.save
       return {
-        user: user,
-        errors: []
+        user: user
       }
     else
       return {
-        user: nil,
         errors: user.errors.full_messages
       }
     end

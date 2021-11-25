@@ -1,8 +1,6 @@
-import { baseUrl, httpClient, graphQuery, graphMutation } from './axiosCsrf'
+import { graphQuery, graphMutation } from './axiosCsrf'
 
-const commentUrl = `${baseUrl}/comment`
-
-export function getComments(post_id, setter) {
+export function getComments(post_id, setter, setErrors) {
   const queryString = `
     {
       comments(postId:${post_id}) {
@@ -19,12 +17,16 @@ export function getComments(post_id, setter) {
     }
   `
   const setComments = response => {
-    setter(response.data.data.comments)
+    if (response.errors) {
+      setErrors(response.errors)
+    } else {
+      setter(response.data.comments)
+    }
   }
   graphQuery(queryString, setComments)
 }
 
-export function createComment(comment) {
+export function createComment(comment, setErrors) {
   const mutationString = `
     mutation {
       createComment(input:{
@@ -37,13 +39,16 @@ export function createComment(comment) {
     }
   `
   const setComments = response => {
-    // response.data.data.createComment.errors
+    if (response.data.createComment.errors) {
+      setErrors(response.data.createComment.errors)
+    } else {
+      setter(response.data.createComment.comments)
+    }
   }
   graphMutation(mutationString, setComments)
 }
 
-export function updateComment(comment, formSwitcher) {
-
+export function updateComment(comment, formSwitcher, setErrors) {
   const mutationString = `
     mutation {
       updateComment(input:{
@@ -55,13 +60,15 @@ export function updateComment(comment, formSwitcher) {
     }
   `
   const switchForm = response => {
+    if (response.data.updateComment.errors) {
+      setErrors(response.data.updateComment.errors)
+    }
     formSwitcher()
   }
   graphMutation(mutationString, switchForm)
 }
 
-export function deleteComment(comment) {
-
+export function deleteComment(comment, setErrors) {
   const mutationString = `
     mutation {
       deleteComment(input: {
@@ -71,8 +78,10 @@ export function deleteComment(comment) {
       }
     }
   `
-  const callbackf = response => {
-    // response.data.data.deleteComment.message: "successfully deleted comment"
+  const callback = response => {
+    if (response.errors) {
+      setErrors(response.errors)
+    }
   }
-  graphMutation(mutationString, callbackf)
+  graphMutation(mutationString, callback)
 }

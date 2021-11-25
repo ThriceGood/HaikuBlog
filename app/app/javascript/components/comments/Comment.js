@@ -24,7 +24,7 @@ const Comment = props => {
 
   function handleSubmit(event) {
     event.preventDefault()
-    updateComment(comment, switchToView)
+    updateComment(comment, switchToView, props.setErrors)
   }
 
   function handleChange(event) {
@@ -32,7 +32,7 @@ const Comment = props => {
   }
   
   function handleDeleteComment() {
-    deleteComment(props.comment)
+    deleteComment(props.comment, props.setErrors)
   }
 
   return (

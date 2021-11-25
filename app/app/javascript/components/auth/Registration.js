@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { createUser } from '../../lib/userQueries';
 
@@ -11,9 +11,15 @@ const Registration = props => {
     password_confirmation: ''
   })
 
+  useEffect(() => {
+    return () => {
+      props.setErrors('')
+    }
+  }, [])
+
   function handleSubmit(event) {
     event.preventDefault()
-    createUser(user, props.handleLogin, navigate)
+    createUser(user, props.handleLogin, navigate, props.setErrors)
   }
 
   function handleChange(event) {
