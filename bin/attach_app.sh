@@ -1,1 +1,1 @@
-docker attach haiku-blog_app_1
+docker attach haikublog_app_1

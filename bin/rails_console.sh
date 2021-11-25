@@ -1,1 +1,1 @@
-docker exec -ti haiku-blog_app_1 rails c
+docker exec -ti haikublog_app_1 rails c
