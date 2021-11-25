@@ -2,7 +2,7 @@
 
 A blog for Haikus. 
 
-Created using: Rails MySQL GraphQL Redis ActionCable ReactJS.
+Created using: Rails, MySQL, GraphQL, Redis, ActionCable and ReactJS.
 
 ## Setup
 
@@ -14,13 +14,13 @@ Once the containers are running, in a new terminal window run:
 
 `bin/init_db.sh` to initialize the database.
 
-To attach to the rails console run: `bin/rails_console.sh`
-
 ## Convenience scripts
+
+To attach to the rails console run: `bin/rails_console.sh`
 
 `./up.sh` will start the containers as daemons.
 
-`bin/attach_app.sh` will attach to the app containers output.
+`bin/attach_app.sh` will attach to the app container's output.
 
 `./down.sh` will shut down the running containers
 
