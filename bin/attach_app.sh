@@ -1,1 +1,1 @@
-docker exec -ti haiku-blog_app_1 /bin/bash
+docker attach haiku-blog_app_1

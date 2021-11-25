@@ -3,18 +3,25 @@ import { useParams, Link } from "react-router-dom";
 import { useNavigate } from 'react-router-dom'
 import { getPost, updatePost } from '../../lib/postQueries';
 
+/*
+* post edit component for updating posts
+*/
+
 const PostEdit = props => {
   const navigate = useNavigate()
   const params = useParams()
   const [post, setPost] = useState({id: params.id, title: '', content: ''})
 
-    useEffect(() => {
-      getPost(params.id, setPost)
-      return () => {
-        props.setErrors('')
-      }
-    }, [])
 
+  // get post details on mount and unset errors on unmount
+  useEffect(() => {
+    getPost(params.id, setPost)
+    return () => {
+      props.setErrors('')
+    }
+  }, [])
+
+  // update post on form submit
   function handleSubmit(event) {
     event.preventDefault()
     updatePost(post, navigate, props.setErrors)

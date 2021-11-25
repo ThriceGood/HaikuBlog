@@ -4,9 +4,9 @@
 
 # Haiku data borrowed from: https://haiku-json-db.herokuapp.com/
 
-kobayashi = User.create(username: 'Kobayashi Issa', email: 'issa@mail.com')
-matsuo = User.create(username: 'Matsuo Basho', email: 'basho@mail.com')
-yosa = User.create(username: 'Yosa Buson', email: 'buson@mail.com')
+kobayashi = User.create(username: 'Kobayashi Issa', email: 'issa@mail.com', password: 'password', password_confirmation: 'password')
+matsuo = User.create(username: 'Matsuo Basho', email: 'basho@mail.com', password: 'password', password_confirmation: 'password')
+yosa = User.create(username: 'Yosa Buson', email: 'buson@mail.com', password: 'password', password_confirmation: 'password')
 
 kobayashis_posts = [
   "A sudden shower falls -\nand naked I am riding\non a naked horse.",
@@ -233,7 +233,7 @@ comment_strings = [
 
 users = [kobayashi, matsuo, yosa]
 
-random_posts = Post.all.map{|post| post}.sample(Post.all.count / 3)
+random_posts = Post.all.map{|post| post}.sample(Post.all.count / 2)
 # randomly distribute comments to posts
 random_posts.each do |post|
   # randomly choose between 1 and 3 users to comment on this post
@@ -243,7 +243,7 @@ random_posts.each do |post|
   end
 end
 
-random_comments = Comment.all.map{|comment| comment}.sample(Comment.all.count / 3)
+random_comments = Comment.all.map{|comment| comment}.sample(Comment.all.count / 2)
 # randomly distribute reactions to comments
 random_comments.each do |comment|
   # randomly choose between 1 and 3 users to react to this post

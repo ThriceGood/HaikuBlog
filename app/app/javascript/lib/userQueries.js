@@ -1,5 +1,9 @@
 import { baseUrl, httpGet, httpPost, httpDelete, graphMutation } from './axiosCsrf'
 
+/* 
+* user query helpers for CRUDing users and handling authentication
+*/
+
 const authenticationUrl = `${baseUrl}/authenticate`
 const sessionsUrl = `${baseUrl}/sessions`
 const logoutUrl = `${baseUrl}/logout`

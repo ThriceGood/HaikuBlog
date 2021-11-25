@@ -2,16 +2,22 @@ import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { login } from '../../lib/userQueries';
 
+/*
+* login component for handling user logins
+*/
+
 const Login = props => {
   const navigate = useNavigate()
   const [user, setUser] = useState({email: '', password: ''})
 
+  // unset errors on component unmout
   useEffect(() => {
     return () => {
       props.setErrors('')
     }
   }, [])
 
+  // call login endpoint and navigate to root if successful login
   function handleSubmit(event) {
     event.preventDefault()
     login(user, props.handleLogin, navigate, props.setErrors)

@@ -1,6 +1,4 @@
-comments = if comments then comments else @comments end
-status = if status then status else :ok end
-json.status status
+json.status :ok
 json.comments do
   json.array! comments do |comment|
     json.id comment.id

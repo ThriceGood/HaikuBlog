@@ -1,6 +1,11 @@
 import React, { useState, useEffect, useRef } from "react"
 import consumer from "../../channels/consumer"
 
+/*
+* reaction component for displaying reaction information
+* handles reaction creation and live updates via ActionCable
+*/
+
 const Reaction = props => {
   const [reactionsCount, setReactionsCount] = useState(0)
   const [reactionUserIds, setReactionUserIds] = useState([])
@@ -13,17 +18,21 @@ const Reaction = props => {
     cable_ref.current = cable;
   }, [cable]);
 
+  // sets initial reaction data from props passed from parent comment component
+  // creates ActionCable connection
   useEffect(() => {
     if (props.comment.reactionInfo) {
       setReactionsCount(props.comment.reactionInfo[props.reaction_type].count)
       setReactionUserIds(props.comment.reactionInfo[props.reaction_type].user_ids)
     }
     create_connection()
+    // unsubscribe from cable on unmount
     return () => {
       cable_ref.current.unsubscribe()
     }
   }, [])
 
+  // creates cable connection and sets data on updates
   function create_connection() {
     const cable_subscription = consumer.subscriptions.create({
       channel: "ReactionChannel", 
@@ -37,6 +46,7 @@ const Reaction = props => {
     setCable(cable_subscription)
   }
 
+  // creates reaction or deletes reaction via ActionCable
   function handleReaction(action) {
     cable.send({
       commit: action,
@@ -46,10 +56,12 @@ const Reaction = props => {
     })
   }
 
+  // if there is no logged in user or user is comment owner disable reactions
   function is_disabled() {
     return !props.currentUser.id || props.comment.user.id == props.currentUser.id
   }
 
+  // if there is already a reaction from this user disable mutliple reactions
   function if_reaction_has_current_user_id() {
     if (props.currentUser) {
       return reactionUserIds.includes(props.currentUser.id)
@@ -58,6 +70,7 @@ const Reaction = props => {
     }
   }
 
+  // select which reaction icon to use
   function reaction_icon(reaction_type) {
     switch (reaction_type) {
       case 'like':

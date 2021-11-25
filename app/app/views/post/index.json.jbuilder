@@ -1,6 +1,4 @@
-posts = if posts then posts else @posts end
-status = if status then status else :ok end
-json.status status
+json.status :ok
 json.posts do
   json.array! posts do |post|
     json.id post.id

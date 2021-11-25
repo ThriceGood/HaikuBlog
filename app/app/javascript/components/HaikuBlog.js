@@ -9,18 +9,25 @@ import PostEdit from './posts/PostEdit'
 import Login from './auth/Login'
 import Registration from './auth/Registration'
 
+/* 
+* main top level component containing navigation and routes
+*/
+
 const HaikuBlog = () => {
   const [currentUser, setCurrentUser] = useState({id: null, username: null})
   const [errors, setErrors] = useState('')
 
+  // check login session on load to set current user
   useEffect(() => {
     checkLogin(currentUser, setCurrentUser)
   }, [])
 
+  // login function used by login component
   function handleLogin(data) {
     setCurrentUser(data)
   }
 
+  // logout function used by logout component
   const handleLogout = () => {
     logout(setCurrentUser)
   }
@@ -28,7 +35,7 @@ const HaikuBlog = () => {
   return (
     <main>
       <Router>
-
+        {/* sidebar navigation */}
         <nav>
           <Link to='/'><h1>HaikuBlog</h1></Link>
           <div id='welcome-text'>
@@ -60,7 +67,7 @@ const HaikuBlog = () => {
                 }
               </div>
         </nav>
-
+        {/* main section where child routes render */}
         <section>
           <Routes>
             <Route path='/' element={<Posts/>}/>
@@ -72,11 +79,9 @@ const HaikuBlog = () => {
             <Route path='/post/:id/edit' element={<PostEdit currentUser={currentUser} setErrors={setErrors}/>}/>
           </Routes>
         </section>
-
       </Router>
     </main>
   )
-
 }
 
 export default HaikuBlog

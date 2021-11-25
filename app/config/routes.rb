@@ -14,4 +14,7 @@ Rails.application.routes.draw do
   end
 
   mount ActionCable.server => '/cable'
+
+  # redirect all unknown routes to root
+  get '*path' => redirect('/')
 end

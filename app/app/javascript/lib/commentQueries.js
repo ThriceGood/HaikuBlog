@@ -1,5 +1,9 @@
 import { graphQuery, graphMutation } from './axiosCsrf'
 
+/* 
+* comment query helpers for CRUDing comments
+*/
+
 export function getComments(post_id, setter, setErrors) {
   const queryString = `
     {

@@ -2,6 +2,11 @@ import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { createUser } from '../../lib/userQueries';
 
+/*
+* registration component containing user registration form
+* handles creation of user
+*/
+
 const Registration = props => {
   let navigate = useNavigate();
   const [user, setUser] = useState({
@@ -17,11 +22,13 @@ const Registration = props => {
     }
   }, [])
 
+  // create user and login if successful
   function handleSubmit(event) {
     event.preventDefault()
     createUser(user, props.handleLogin, navigate, props.setErrors)
   }
 
+  // updates user state with every form input change
   function handleChange(event) {
     setUser(prevState => ({ ...prevState, [event.target.name]: event.target.value}))
   }  

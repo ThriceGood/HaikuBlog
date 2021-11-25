@@ -5,7 +5,8 @@ module Types
     field :post_id, ID, null: false
     field :text, String, null: false
     field :user, Types::UserType, null: false
-    field :reaction_info, String, null: true, description: 'information about reactions'
+    field :reaction_info, String, null: true, 
+      description: 'information about associated reactions'
     field :created_at, String, null: false
     
     def reaction_info

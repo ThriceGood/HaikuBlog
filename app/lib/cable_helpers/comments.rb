@@ -12,7 +12,7 @@ class CableHelpers::Comments
     Jbuilder.new do |json|
       ApplicationController.render(
         template: 'comment/index.json',
-        locals: { comments: comments, status: :ok, json: json }
+        locals: { comments: comments, json: json }
       )
     end.attributes!
   end

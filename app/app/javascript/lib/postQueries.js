@@ -1,5 +1,9 @@
 import { graphQuery, graphMutation } from './axiosCsrf'
 
+/* 
+* post query helpers for CRUDing posts
+*/
+
 export function getPost(post_id, setter, setErrors) {
   const queryString = `
   {

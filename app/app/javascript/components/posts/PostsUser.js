@@ -2,10 +2,15 @@ import React, { useState, useEffect, useRef } from 'react'
 import { Link, useParams } from "react-router-dom";
 import { getUserPosts } from '../../lib/postQueries'
 
+/*
+* user posts component for displaying all posts related to single user
+*/
+
 const Posts = () => {
   const [posts, setPosts] = useState([])
   const params = useParams()
     
+  // get user posts on mount 
   useEffect(() => {
     getUserPosts(params.user_id, setPosts)
   }, [])

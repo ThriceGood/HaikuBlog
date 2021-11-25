@@ -2,7 +2,7 @@ default: &default
 
 development:
   <<: *default
-  base_url: http://localhost:3000
+  base_url: <%= ENV["BASE_URL"] %>
 
 test:
   <<: *default

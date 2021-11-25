@@ -9,6 +9,8 @@ class ReactionChannel < ApplicationCable::Channel
   def unsubscribed
   end
 
+  # handles creation and deletion of reactions for user
+  # broadcasts reaction data update to connect users
   def receive(data)
     commit = data['commit']
     user_id = data['user_id']
@@ -29,6 +31,7 @@ class ReactionChannel < ApplicationCable::Channel
     end
   end
 
+  # generates the reaction data hash required by frontend
   def get_reaction_data(comment_id, reaction_type)
     comment = Comment.find(comment_id)
     user_ids = Reaction

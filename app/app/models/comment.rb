@@ -8,8 +8,9 @@ class Comment < ApplicationRecord
   scope :of_post, -> (post) { where(post_id: post.id) }
   scope :of_post_id, -> (post_id) { where(post_id: post_id) }
 
+  # reaction_info is a hash of reaction data to use on the frontend 
+  # when rendering reactions. returning json for use in graphQL type
   def reaction_info
-    # returning json for use in graphQL type
     return {
       like: {
         count: Reaction.of_comment(self).of_type('like').count,

@@ -5,7 +5,8 @@ module Types
     field :title, String, null: true
     field :content, String, null: true
     field :user, Types::UserType, null: false
-    field :comment_count, Integer, null: true, description: 'count of comments'
+    field :comment_count, Integer, null: true, 
+      description: 'count of associated comments'
     field :created_at, String, null: false
     
     def comment_count

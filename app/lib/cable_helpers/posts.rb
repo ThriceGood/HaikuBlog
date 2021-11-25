@@ -12,7 +12,7 @@ class CableHelpers::Posts
     Jbuilder.new do |json|
       ApplicationController.render(
         template: 'post/index.json',
-        locals: { posts: posts, status: :ok, json: json }
+        locals: { posts: posts, json: json }
       )
     end.attributes!
   end
