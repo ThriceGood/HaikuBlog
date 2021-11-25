@@ -11,7 +11,7 @@ class CableHelpers::Posts
     posts = Post.all.order(created_at: :desc)
     Jbuilder.new do |json|
       ApplicationController.render(
-        template: 'post/index.json',
+        template: 'post/index',
         locals: { posts: posts, json: json }
       )
     end.attributes!

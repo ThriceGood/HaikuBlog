@@ -7,10 +7,4 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  def authorized?
-    unless @current_user
-      render json: {status: :unauthorized}
-    end
-  end
-
 end

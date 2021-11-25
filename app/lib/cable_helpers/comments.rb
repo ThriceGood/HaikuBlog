@@ -11,7 +11,7 @@ class CableHelpers::Comments
     comments = Comment.of_post_id(post_id).order(created_at: :desc)
     Jbuilder.new do |json|
       ApplicationController.render(
-        template: 'comment/index.json',
+        template: 'comment/index',
         locals: { comments: comments, json: json }
       )
     end.attributes!
