@@ -10,9 +10,13 @@ In order to run this application clone the repository and:
 
 Run `docker-compose up` to build the images and start the containers.
 
-Once the containers are running, in a new terminal window run:
+Once the containers are running open a new terminal window and:
 
-`bin/init_db.sh` to initialize the database.
+For some reason the yarn install step of the build is not persisting the node_modules so:
+
+Run `bin/yarn_install.sh` to install the node modules.
+
+To initialize the database run: `bin/init_db.sh`
 
 ## Convenience scripts
 
