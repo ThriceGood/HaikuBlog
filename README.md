@@ -18,6 +18,12 @@ Run `bin/yarn_install.sh` to install the node modules.
 
 To initialize the database run: `bin/init_db.sh`
 
+## The application
+
+Once the database has been initialize the app will now be running on http://localhost:3000
+
+Visit the url, create and account and post some Haikus!
+
 ## Convenience scripts
 
 To attach to the rails console run: `bin/rails_console.sh`
@@ -27,9 +33,3 @@ To attach to the rails console run: `bin/rails_console.sh`
 `bin/attach_app.sh` will attach to the app container's output.
 
 `./down.sh` will shut down the running containers
-
-## The application
-
-Once the database has been initialize the app will now be running on http://localhost:3000
-
-Visit the url, create and account and post some Haikus!
