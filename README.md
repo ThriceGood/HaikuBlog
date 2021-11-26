@@ -24,6 +24,8 @@ Once the database has been initialize the app will now be running on http://loca
 
 Visit the url, create and account and post some Haikus!
 
+![HaikuBlog](/app/haikublog.png)
+
 ## Convenience scripts
 
 To attach to the rails console run: `bin/rails_console.sh`
