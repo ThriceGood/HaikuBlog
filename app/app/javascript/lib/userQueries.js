@@ -1,10 +1,11 @@
-import { baseUrl, httpGet, httpPost, httpDelete, graphMutation } from './axiosCsrf'
+import { baseUrl, httpGet, httpPost, httpDelete } from './axiosCsrf'
 
 /* 
 * user query helpers for CRUDing users and handling authentication
 */
 
 const authenticationUrl = `${baseUrl}/authenticate`
+const registrationsUrl = `${baseUrl}/registrations`
 const sessionsUrl = `${baseUrl}/sessions`
 const logoutUrl = `${baseUrl}/logout`
 
@@ -42,29 +43,13 @@ export function logout(setter) {
 }
 
 export function createUser(user, loginHandler, navigate, setErrors) {
-  const mutation_query = `
-    mutation {
-      createUser(input:{
-        username: "${user.username}"
-        email: "${user.email}"
-        password: "${user.password}"
-        passwordConfirmation: "${user.password_confirmation}"
-      }) {
-        user {
-          id
-          username
-        }
-        errors
-      }
-    }
-  `
   const callback = response => {
-    if (response.data.createUser.errors) {
-      setErrors(response.data.createUser.errors)
-    } else {
-      loginHandler(response.data.createUser.user)
+    if (response.data.status === 'created') {
+      loginHandler(response.data)
       navigate('/')
+    } else {
+      setErrors('registration failed')
     }
   }
-  graphMutation(mutation_query, callback)
+  httpPost(registrationsUrl, {user: user}, callback)
 }
