@@ -45,7 +45,7 @@ export function logout(setter) {
 export function createUser(user, loginHandler, navigate, setErrors) {
   const callback = response => {
     if (response.data.status === 'created') {
-      loginHandler(response.data)
+      loginHandler(response.data.user)
       navigate('/')
     } else {
       setErrors('registration failed')

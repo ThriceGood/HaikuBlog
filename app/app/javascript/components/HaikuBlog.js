@@ -24,7 +24,7 @@ const HaikuBlog = () => {
 
   // login function used by login component
   function handleLogin(data) {
-    setCurrentUser(data.user)
+    setCurrentUser(data)
   }
 
   // logout function used by logout component
