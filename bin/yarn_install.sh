@@ -1,1 +1,0 @@
-docker exec haikublog_app_1 yarn install

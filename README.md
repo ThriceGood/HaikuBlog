@@ -12,11 +12,7 @@ Run `docker-compose up` to build the images and start the containers.
 
 Once the containers are running open a new terminal window and:
 
-For some reason the yarn install step of the build is not persisting the node_modules so:
-
-Run `bin/yarn_install.sh` to install the node modules.
-
-To initialize the database run: `bin/init_db.sh`
+Run `bin/init_db.sh` to initialize the database
 
 ## The application
 

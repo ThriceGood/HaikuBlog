@@ -8,8 +8,6 @@ services:
     tty: true
     stdin_open: true
     env_file: ./env/app.dev.env
-    volumes:
-      - ./app:/app
     ports:
       - "3000:3000"
     depends_on:
