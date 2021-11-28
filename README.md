@@ -4,6 +4,10 @@ A blog for Haikus.
 
 Created using: Rails, MySQL, GraphQL, Redis, ActionCable and ReactJS.
 
+## Requirements
+
+Docker and Docker Compose
+
 ## Setup
 
 In order to run this application clone the repository and:
