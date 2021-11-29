@@ -30,6 +30,10 @@ Visit the url, create and account and post some Haikus!
 
 To attach to the rails console run: `bin/rails_console.sh`
 
+To attach to the app container's bash run: `bin/bash_app.sh`
+
+To attach to the database container's bash run: `bin/bash_db.sh`
+
 To run the tests run: `bin/run_tests.sh`
 
 `./up.sh` will start the containers as daemons.
