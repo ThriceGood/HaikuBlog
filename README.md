@@ -41,3 +41,4 @@ To run the tests run: `bin/run_tests.sh`
 `bin/attach_app.sh` will attach to the app container's output.
 
 `./down.sh` will shut down the running containers
+
